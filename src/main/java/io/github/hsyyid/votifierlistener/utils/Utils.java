@@ -134,15 +134,15 @@ public class Utils
 		return linkList;
 	}
 
-	public static double getMaxMoneyReward()
+	public static int getMaxMoneyReward()
 	{
 		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "money", "maximum");
-		return valueNode.getDouble();
+		return valueNode.getInt();
 	}
 
-	public static double getMinimumMoneyReward()
+	public static int getMinimumMoneyReward()
 	{
 		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "money", "minimum");
-		return valueNode.getDouble();
+		return valueNode.getInt();
 	}
 }
