@@ -145,4 +145,19 @@ public class Utils
 		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "money", "minimum");
 		return valueNode.getInt();
 	}
+
+	public static boolean shouldAnnounceVotes()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(config).getNode("vote", "announce");
+
+		if (valueNode.getValue() != null)
+		{
+			return valueNode.getBoolean();
+		}
+		else
+		{
+			Configs.setValue(config, valueNode.getPath(), true);
+			return true;
+		}
+	}
 }

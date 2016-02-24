@@ -25,6 +25,7 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.service.economy.account.UniqueAccount;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.io.IOException;
@@ -127,7 +128,7 @@ public class VotifierListenerPlugin
 			.build();
 
 		game.getCommandManager().register(this, votifierListenerCommandSpec, "votifierlistener");
-		
+
 		CommandSpec voteCommandSpec = CommandSpec.builder()
 			.description(Text.of("Vote Command"))
 			.permission("votifierlistener.command.vote")
@@ -165,10 +166,8 @@ public class VotifierListenerPlugin
 	{
 		Vote vote = event.getVote();
 
-		for (Player player : game.getServer().getOnlinePlayers())
-		{
-			player.sendMessage(Text.of(TextColors.GREEN, "[VotifierListener]: ", TextColors.GOLD, event.getVote().getUsername() + " just voted and got a reward! You can too with ", TextColors.GRAY, "/vote"));
-		}
+		if(Utils.shouldAnnounceVotes())
+			MessageChannel.TO_ALL.send(Text.of(TextColors.GREEN, "[VotifierListener]: ", TextColors.GOLD, event.getVote().getUsername() + " just voted and got a reward! You can too with ", TextColors.GRAY, "/vote"));
 
 		for (Player player : game.getServer().getOnlinePlayers())
 		{

@@ -84,6 +84,7 @@ public class Config implements Configurable
 	public void populate()
 	{
 		get().getNode("vote", "links").setValue("http://www.planetminecraft.com/,").setComment("Your voting links, seperated by commas. Accessed by doing /vote");
+		get().getNode("vote", "announce").setValue(true).setComment("Toggles the announcing of votes.");
 	}
 
 	@Override
