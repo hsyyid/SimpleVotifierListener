@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@Plugin(id = "VotifierListener", name = "VotifierListener", version = "0.1", dependencies = "required-after:nuvotifier")
+@Plugin(id = "VotifierListener", name = "VotifierListener", version = "0.2", dependencies = "required-after:nuvotifier")
 public class VotifierListenerPlugin
 {
 	protected VotifierListenerPlugin()
