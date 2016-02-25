@@ -28,6 +28,17 @@ public class Utils
 			Configs.setValue(rewardsConfig, rewardNode.getPath(), formattedDrop);
 		}
 	}
+	
+	public static void removeReward(String reward)
+	{
+		ConfigurationNode rewardNode = Configs.getConfig(rewardsConfig).getNode("rewards", "commands");
+		String formattedDrop = (reward + ",");
+
+		if (rewardNode.getValue() != null)
+		{
+			Configs.setValue(rewardsConfig, rewardNode.getPath(), rewardNode.getString().replace(formattedDrop, ""));
+		}
+	}
 
 	public static ArrayList<String> getRewards()
 	{

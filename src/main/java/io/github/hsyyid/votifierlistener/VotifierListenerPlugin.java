@@ -5,6 +5,7 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.sponge.event.VotifierEvent;
 import io.github.hsyyid.votifierlistener.cmdexecutors.AddLinkExecutor;
 import io.github.hsyyid.votifierlistener.cmdexecutors.AddRewardCommand;
+import io.github.hsyyid.votifierlistener.cmdexecutors.RemoveRewardCommand;
 import io.github.hsyyid.votifierlistener.cmdexecutors.VoteCommand;
 import io.github.hsyyid.votifierlistener.cmdexecutors.VotifierListenerCommand;
 import io.github.hsyyid.votifierlistener.config.Config;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@Plugin(id = "VotifierListener", name = "VotifierListener", version = "0.2", dependencies = "required-after:nuvotifier")
+@Plugin(id = "VotifierListener", name = "VotifierListener", version = "0.3", dependencies = "required-after:nuvotifier")
 public class VotifierListenerPlugin
 {
 	protected VotifierListenerPlugin()
@@ -113,6 +114,13 @@ public class VotifierListenerPlugin
 			.executor(new AddRewardCommand())
 			.build());
 
+		subcommands.put(Arrays.asList("removereward"), CommandSpec.builder()
+			.description(Text.of("Removes Rewards for Votes"))
+			.permission("votifierlistener.command.removereward")
+			.arguments(GenericArguments.onlyOne(GenericArguments.remainingJoinedStrings(Text.of("command"))))
+			.executor(new RemoveRewardCommand())
+			.build());
+
 		subcommands.put(Arrays.asList("addlink", "addvotelink"), CommandSpec.builder()
 			.description(Text.of("Adds Links for Votes"))
 			.permission("votifierlistener.command.addlink")
@@ -166,7 +174,7 @@ public class VotifierListenerPlugin
 	{
 		Vote vote = event.getVote();
 
-		if(Utils.shouldAnnounceVotes())
+		if (Utils.shouldAnnounceVotes())
 			MessageChannel.TO_ALL.send(Text.of(TextColors.GREEN, "[VotifierListener]: ", TextColors.GOLD, event.getVote().getUsername() + " just voted and got a reward! You can too with ", TextColors.GRAY, "/vote"));
 
 		for (Player player : game.getServer().getOnlinePlayers())
