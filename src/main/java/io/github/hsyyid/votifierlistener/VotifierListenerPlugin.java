@@ -20,8 +20,10 @@ import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
+import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.service.economy.account.UniqueAccount;
@@ -39,7 +41,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@Plugin(id = "VotifierListener", name = "VotifierListener", version = "0.3", dependencies = "required-after:nuvotifier")
+@Plugin(id = "VotifierListener", name = "VotifierListener", version = "0.4", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
 public class VotifierListenerPlugin
 {
 	protected VotifierListenerPlugin()
@@ -177,21 +179,15 @@ public class VotifierListenerPlugin
 		if (Utils.shouldAnnounceVotes())
 			MessageChannel.TO_ALL.send(Text.of(TextColors.GREEN, "[VotifierListener]: ", TextColors.GOLD, event.getVote().getUsername() + " just voted and got a reward! You can too with ", TextColors.GRAY, "/vote"));
 
-		for (Player player : game.getServer().getOnlinePlayers())
+		for (Player player : Sponge.getServer().getOnlinePlayers())
 		{
 			if (player.getName().equals(vote.getUsername()))
 			{
 				player.sendMessage(Text.of(TextColors.GREEN, "Thanks for Voting! Here is a reward!"));
-				UniqueAccount uniqueAccount = null;
-
-				if (economyService.getAccount(player.getUniqueId()).isPresent())
-					uniqueAccount = economyService.getAccount(player.getUniqueId()).get();
-				else
-					uniqueAccount = economyService.createAccount(player.getUniqueId()).get();
-
+				UniqueAccount uniqueAccount = economyService.getOrCreateAccount(player.getUniqueId()).get();
 				Random rand = new Random();
 				BigDecimal decimal = new BigDecimal(rand.nextInt(Utils.getMaxMoneyReward() - Utils.getMinimumMoneyReward()) + Utils.getMinimumMoneyReward());
-				uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(this));
+				uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(NamedCause.source(player)));
 
 				for (int counter = 0; counter < 2; counter++)
 				{
