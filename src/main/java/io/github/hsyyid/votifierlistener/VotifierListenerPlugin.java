@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@Plugin(id = "io.github.hsyyid.votifierlistener", name = "VotifierListener", version = "0.4", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
+@Plugin(id = "io.github.hsyyid.votifierlistener", name = "VotifierListener", version = "0.5", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
 public class VotifierListenerPlugin
 {
 	protected VotifierListenerPlugin()
@@ -186,7 +186,13 @@ public class VotifierListenerPlugin
 				player.sendMessage(Text.of(TextColors.GREEN, "Thanks for Voting! Here is a reward!"));
 				UniqueAccount uniqueAccount = economyService.getOrCreateAccount(player.getUniqueId()).get();
 				Random rand = new Random();
-				BigDecimal decimal = new BigDecimal(rand.nextInt(Utils.getMaxMoneyReward() - Utils.getMinimumMoneyReward()) + Utils.getMinimumMoneyReward());
+				BigDecimal decimal;
+
+				if (Utils.getMaxMoneyReward() != Utils.getMinimumMoneyReward())
+					decimal = new BigDecimal(rand.nextInt(Utils.getMaxMoneyReward() - Utils.getMinimumMoneyReward()) + Utils.getMinimumMoneyReward());
+				else
+					decimal = new BigDecimal(Utils.getMinimumMoneyReward());
+
 				uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(NamedCause.source(player)));
 
 				for (int counter = 0; counter < 2; counter++)
