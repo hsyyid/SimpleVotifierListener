@@ -83,9 +83,10 @@ public class RewardsConfig implements Configurable
 	@Override
 	public void populate()
 	{
+		get().getNode("rewards", "amount").setValue(2).setComment("Number of rewards a player will receive.");
 		get().getNode("rewards", "commands").setValue("minecraft:give @p minecraft:diamond_sword 1,").setComment("Possible reward commands for voting.");
-		get().getNode("rewards", "money", "maximum").setValue("500").setComment("Maximum amount of money a player can get for voting.");
-		get().getNode("rewards", "money", "minimum").setValue("100").setComment("Minimum amount of money a player can get for voting.");
+		get().getNode("rewards", "money", "maximum").setValue(500).setComment("Maximum amount of money a player can get for voting.");
+		get().getNode("rewards", "money", "minimum").setValue(100).setComment("Minimum amount of money a player can get for voting.");
 	}
 
 	@Override

@@ -156,6 +156,21 @@ public class Utils
 		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "money", "minimum");
 		return valueNode.getInt();
 	}
+	
+	public static int getAmtOfRewards()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "amount");
+		
+		if(valueNode.getValue() != null)
+		{
+			return valueNode.getInt();
+		}
+		else
+		{
+			Configs.setValue(rewardsConfig, valueNode.getPath(), 2);
+			return 2;
+		}
+	}
 
 	public static boolean shouldAnnounceVotes()
 	{
