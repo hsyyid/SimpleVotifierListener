@@ -195,7 +195,7 @@ public class VotifierListenerPlugin
 
 				uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(NamedCause.source(player)));
 
-				for (int counter = 0; counter < 2; counter++)
+				for (int counter = 0; counter < Utils.getAmtOfRewards(); counter++)
 				{
 					String command = Utils.getRewards().get(rand.nextInt(Utils.getRewards().size()));
 					command = command.replaceAll("@p", player.getName());
