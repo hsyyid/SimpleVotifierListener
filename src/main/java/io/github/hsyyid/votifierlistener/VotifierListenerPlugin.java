@@ -195,11 +195,22 @@ public class VotifierListenerPlugin
 
 				uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(NamedCause.source(player)));
 
-				for (int counter = 0; counter < Utils.getAmtOfRewards(); counter++)
+				if (!Utils.shouldGiveAllRewards())
 				{
-					String command = Utils.getRewards().get(rand.nextInt(Utils.getRewards().size()));
-					command = command.replaceAll("@p", player.getName());
-					Sponge.getCommandManager().process(Sponge.getServer().getConsole(), command);
+
+					for (int counter = 0; counter < Utils.getAmtOfRewards(); counter++) {
+						String command = Utils.getRewards().get(rand.nextInt(Utils.getRewards().size()));
+						command = command.replaceAll("@p", player.getName());
+						Sponge.getCommandManager().process(Sponge.getServer().getConsole(), command);
+					}
+				}
+				else
+				{
+					for (int counter = 0; counter < Utils.getRewards().size(); counter++) {
+						String command = Utils.getRewards().get(counter);
+						command = command.replaceAll("@p", player.getName());
+						Sponge.getCommandManager().process(Sponge.getServer().getConsole(), command);
+					}
 				}
 
 				break;
