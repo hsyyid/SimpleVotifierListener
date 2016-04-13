@@ -181,7 +181,7 @@ public class VotifierListenerPlugin
 
 		for (Player player : Sponge.getServer().getOnlinePlayers())
 		{
-			if (player.getName().equals(vote.getUsername()))
+			if (player.getName().equalsIgnoreCase(vote.getUsername()))
 			{
 				player.sendMessage(Text.of(TextColors.GREEN, "Thanks for Voting! Here is a reward!"));
 				UniqueAccount uniqueAccount = economyService.getOrCreateAccount(player.getUniqueId()).get();
