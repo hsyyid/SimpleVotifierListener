@@ -161,7 +161,7 @@ public class Utils
 	{
 		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "amount");
 		
-		if(valueNode.getValue() != null)
+		if (valueNode.getValue() != null)
 		{
 			return valueNode.getInt();
 		}
@@ -169,6 +169,32 @@ public class Utils
 		{
 			Configs.setValue(rewardsConfig, valueNode.getPath(), 2);
 			return 2;
+		}
+	}
+
+	public static boolean shouldGiveAllRewards()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "mode");
+
+		if (valueNode.getValue() != null) {
+			if (valueNode.getValue().toString().equalsIgnoreCase("all"))
+			{
+				return true;
+			}
+			else if (valueNode.getValue().toString().equalsIgnoreCase("random"))
+			{
+				return false;
+			}
+			else
+			{
+				Configs.setValue(rewardsConfig, valueNode.getPath(), "random");
+				return false;
+			}
+		}
+		else
+		{
+			Configs.setValue(rewardsConfig, valueNode.getPath(), "random");
+			return false;
 		}
 	}
 
