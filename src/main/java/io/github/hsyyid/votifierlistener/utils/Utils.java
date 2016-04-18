@@ -187,6 +187,32 @@ public class Utils
 		}
 	}
 
+	public static boolean shouldGiveAllRewards()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "mode");
+
+		if (valueNode.getValue() != null) {
+			if (valueNode.getValue().toString().equalsIgnoreCase("all"))
+			{
+				return true;
+			}
+			else if (valueNode.getValue().toString().equalsIgnoreCase("random"))
+			{
+				return false;
+			}
+			else
+			{
+				Configs.setValue(rewardsConfig, valueNode.getPath(), "random");
+				return false;
+			}
+		}
+		else
+		{
+			Configs.setValue(rewardsConfig, valueNode.getPath(), "random");
+			return false;
+		}
+	}
+
 	public static boolean shouldAnnounceVotes()
 	{
 		ConfigurationNode valueNode = Configs.getConfig(config).getNode("vote", "announce");
