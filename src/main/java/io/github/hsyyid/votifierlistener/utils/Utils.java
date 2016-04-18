@@ -28,7 +28,7 @@ public class Utils
 			Configs.setValue(rewardsConfig, rewardNode.getPath(), formattedDrop);
 		}
 	}
-	
+
 	public static void removeReward(String reward)
 	{
 		ConfigurationNode rewardNode = Configs.getConfig(rewardsConfig).getNode("rewards", "commands");
@@ -101,6 +101,21 @@ public class Utils
 		}
 	}
 
+	public static boolean isEconomyEnabled()
+	{
+		ConfigurationNode valueNode = Configs.getConfig(config).getNode("economy", "toggle");
+
+		if (valueNode.getValue() != null)
+		{
+			return valueNode.getBoolean();
+		}
+		else
+		{
+			Configs.setValue(config, valueNode.getPath(), true);
+			return true;
+		}
+	}
+
 	public static ArrayList<String> getLinks()
 	{
 		ConfigurationNode valueNode = Configs.getConfig(config).getNode("vote", "links");
@@ -156,12 +171,12 @@ public class Utils
 		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "money", "minimum");
 		return valueNode.getInt();
 	}
-	
+
 	public static int getAmtOfRewards()
 	{
 		ConfigurationNode valueNode = Configs.getConfig(rewardsConfig).getNode("rewards", "amount");
-		
-		if(valueNode.getValue() != null)
+
+		if (valueNode.getValue() != null)
 		{
 			return valueNode.getInt();
 		}

@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@Plugin(id = "io.github.hsyyid.votifierlistener", name = "VotifierListener", version = "0.6", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
+@Plugin(id = "io.github.hsyyid.votifierlistener", name = "VotifierListener", version = "0.6.1", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
 public class VotifierListenerPlugin
 {
 	protected VotifierListenerPlugin()
@@ -161,13 +161,16 @@ public class VotifierListenerPlugin
 	{
 		Optional<EconomyService> econService = Sponge.getServiceManager().provide(EconomyService.class);
 
-		if (econService.isPresent())
+		if (Utils.isEconomyEnabled())
 		{
-			economyService = econService.get();
-		}
-		else
-		{
-			getLogger().error("Error! This plugin requires an Economy plugin.");
+			if (econService.isPresent())
+			{
+				economyService = econService.get();
+			}
+			else
+			{
+				getLogger().error("Error! This plugin requires an Economy plugin.");
+			}
 		}
 	}
 
@@ -177,23 +180,33 @@ public class VotifierListenerPlugin
 		Vote vote = event.getVote();
 
 		if (Utils.shouldAnnounceVotes())
+		{
 			MessageChannel.TO_ALL.send(Text.of(TextColors.GREEN, "[VotifierListener]: ", TextColors.GOLD, event.getVote().getUsername() + " just voted and got a reward! You can too with ", TextColors.GRAY, "/vote"));
+		}
 
 		for (Player player : Sponge.getServer().getOnlinePlayers())
 		{
 			if (player.getName().equals(vote.getUsername()))
 			{
-				player.sendMessage(Text.of(TextColors.GREEN, "Thanks for Voting! Here is a reward!"));
-				UniqueAccount uniqueAccount = economyService.getOrCreateAccount(player.getUniqueId()).get();
 				Random rand = new Random();
-				BigDecimal decimal;
+				player.sendMessage(Text.of(TextColors.GREEN, "Thanks for Voting! Here is a reward!"));
 
-				if (Utils.getMaxMoneyReward() != Utils.getMinimumMoneyReward())
-					decimal = new BigDecimal(rand.nextInt(Utils.getMaxMoneyReward() - Utils.getMinimumMoneyReward()) + Utils.getMinimumMoneyReward());
-				else
-					decimal = new BigDecimal(Utils.getMinimumMoneyReward());
+				if (Utils.isEconomyEnabled())
+				{
+					UniqueAccount uniqueAccount = economyService.getOrCreateAccount(player.getUniqueId()).get();
+					BigDecimal decimal;
 
-				uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(NamedCause.source(player)));
+					if (Utils.getMaxMoneyReward() != Utils.getMinimumMoneyReward())
+					{
+						decimal = new BigDecimal(rand.nextInt(Utils.getMaxMoneyReward() - Utils.getMinimumMoneyReward()) + Utils.getMinimumMoneyReward());
+					}
+					else
+					{
+						decimal = new BigDecimal(Utils.getMinimumMoneyReward());
+					}
+
+					uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(NamedCause.source(player)));
+				}
 
 				for (int counter = 0; counter < Utils.getAmtOfRewards(); counter++)
 				{
