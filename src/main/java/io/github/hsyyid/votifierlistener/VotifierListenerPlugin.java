@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@Plugin(id = "io.github.hsyyid.votifierlistener", name = "VotifierListener", version = "0.6.2", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
+@Plugin(id = "votifierlistener", name = "VotifierListener", version = "0.6.2", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
 public class VotifierListenerPlugin
 {
 	protected VotifierListenerPlugin()
@@ -210,19 +210,22 @@ public class VotifierListenerPlugin
 
 				if (!Utils.shouldGiveAllRewards())
 				{
-
-					for (int counter = 0; counter < Utils.getAmtOfRewards(); counter++) {
-						String command = Utils.getRewards().get(rand.nextInt(Utils.getRewards().size()));
-						command = command.replaceAll("@p", player.getName());
-						Sponge.getCommandManager().process(Sponge.getServer().getConsole(), command);
+					for (int counter = 0; counter < Utils.getAmtOfRewards(); counter++)
+					{
+						String command = Utils.getRewards().get(rand.nextInt(Utils.getRewards().size())).replaceAll("@p", player.getName());
+						Sponge.getScheduler().createTaskBuilder()
+							.execute(() -> Sponge.getCommandManager().process(Sponge.getServer().getConsole().getCommandSource().get(), command))
+							.submit(this);
 					}
 				}
 				else
 				{
-					for (int counter = 0; counter < Utils.getRewards().size(); counter++) {
-						String command = Utils.getRewards().get(counter);
-						command = command.replaceAll("@p", player.getName());
-						Sponge.getCommandManager().process(Sponge.getServer().getConsole(), command);
+					for (int counter = 0; counter < Utils.getRewards().size(); counter++)
+					{
+						String command = Utils.getRewards().get(counter).replaceAll("@p", player.getName());
+						Sponge.getScheduler().createTaskBuilder()
+							.execute(() -> Sponge.getCommandManager().process(Sponge.getServer().getConsole().getCommandSource().get(), command))
+							.submit(this);
 					}
 				}
 
