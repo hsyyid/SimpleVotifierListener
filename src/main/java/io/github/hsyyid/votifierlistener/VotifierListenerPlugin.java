@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@Plugin(id = "votifierlistener", name = "VotifierListener", version = "0.6.3", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
+@Plugin(id = "votifierlistener", name = "VotifierListener", version = "0.6.4", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
 public class VotifierListenerPlugin
 {
 	protected VotifierListenerPlugin()
@@ -205,7 +205,7 @@ public class VotifierListenerPlugin
 						decimal = new BigDecimal(Utils.getMinimumMoneyReward());
 					}
 
-					uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(NamedCause.source(player)));
+					uniqueAccount.deposit(economyService.getDefaultCurrency(), decimal, Cause.of(NamedCause.notifier(player)));
 				}
 
 				if (!Utils.shouldGiveAllRewards())
