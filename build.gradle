@@ -3,14 +3,7 @@ apply plugin: 'eclipse'
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
-version = '0.6.5'
-
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'VotifierListener',
-                   'Implementation-Version': version
-    }
-}
+version = '0.6.6'
 
 repositories {
     mavenCentral()
@@ -21,21 +14,9 @@ repositories {
 }
 
 dependencies {
-   compile "org.spongepowered:spongeapi:6.0.0-SNAPSHOT"
+   compile "org.spongepowered:spongeapi:5.1.0-SNAPSHOT"
 }
 
 dependencies {
-	compile files('libs/nuvotifier-universal-2.3.3.jar')
-}
-
-test {
-    systemProperties 'property': 'value'
-}
-
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
-    }
+	compile files('libs/votifier-sponge.jar')
 }

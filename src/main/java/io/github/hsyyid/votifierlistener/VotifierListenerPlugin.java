@@ -1,16 +1,15 @@
 package io.github.hsyyid.votifierlistener;
 
-import com.google.inject.Inject;
-import com.vexsoftware.votifier.model.Vote;
-import com.vexsoftware.votifier.sponge.event.VotifierEvent;
-import io.github.hsyyid.votifierlistener.cmdexecutors.AddLinkExecutor;
-import io.github.hsyyid.votifierlistener.cmdexecutors.AddRewardCommand;
-import io.github.hsyyid.votifierlistener.cmdexecutors.RemoveRewardCommand;
-import io.github.hsyyid.votifierlistener.cmdexecutors.VoteCommand;
-import io.github.hsyyid.votifierlistener.cmdexecutors.VotifierListenerCommand;
-import io.github.hsyyid.votifierlistener.config.Config;
-import io.github.hsyyid.votifierlistener.config.RewardsConfig;
-import io.github.hsyyid.votifierlistener.utils.Utils;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
@@ -23,7 +22,6 @@ import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
-import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.service.economy.account.UniqueAccount;
@@ -31,17 +29,20 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import com.google.inject.Inject;
+import com.vexsoftware.votifier.model.Vote;
+import com.vexsoftware.votifier.sponge.event.VotifierEvent;
 
-@Plugin(id = "votifierlistener", name = "VotifierListener", version = "0.6.4", description = "This plugin enables server admins to give players rewards for voting for their server.", dependencies = @Dependency(id = "nuvotifier", version = "1.0", optional = false) )
+import io.github.hsyyid.votifierlistener.cmdexecutors.AddLinkExecutor;
+import io.github.hsyyid.votifierlistener.cmdexecutors.AddRewardCommand;
+import io.github.hsyyid.votifierlistener.cmdexecutors.RemoveRewardCommand;
+import io.github.hsyyid.votifierlistener.cmdexecutors.VoteCommand;
+import io.github.hsyyid.votifierlistener.cmdexecutors.VotifierListenerCommand;
+import io.github.hsyyid.votifierlistener.config.Config;
+import io.github.hsyyid.votifierlistener.config.RewardsConfig;
+import io.github.hsyyid.votifierlistener.utils.Utils;
+
+@Plugin(id = "votifierlistener", name = "VotifierListener", version = "0.6.4", description = "This plugin enables server admins to give players rewards for voting for their server.")
 public class VotifierListenerPlugin
 {
 	protected VotifierListenerPlugin()

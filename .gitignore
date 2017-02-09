@@ -2,6 +2,7 @@
 ### Eclipse template
 *.pydevproject
 .metadata
+.DS_Store
 .gradle
 bin/
 tmp/
